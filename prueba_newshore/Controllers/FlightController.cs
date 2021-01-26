@@ -84,7 +84,6 @@ namespace prueba_newshore.Controllers{
             comandoFlight.ExecuteNonQuery();
 
             conexion.Close();
-
         }
 
         private static string FixApiResponseString(string input)

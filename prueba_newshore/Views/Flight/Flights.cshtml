@@ -1,0 +1,199 @@
+﻿@{
+    ViewBag.Title = "Buscador de Vuelos";
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/css")
+
+    <script type="text/javascript">
+    $('.datepicker').datepicker({
+        minDate: new Date()
+    });
+
+        function buscarVuelos() {     
+
+            if (document.getElementById('selectOrigen').value != 0 && document.getElementById('selectDestino').value != 0 && document.getElementById('selectFecha').value != 0) {
+                if (document.getElementById('selectOrigen').value != document.getElementById('selectDestino').value) {
+            
+
+                    var table = document.getElementById('tablaVuelos');
+                    var tbody = document.getElementsByTagName('tbody')[0];
+                    tbody.parentNode.removeChild(tbody);
+
+                    var selectOrigen = document.getElementById('selectOrigen');
+                    var selectDestino = document.getElementById('selectDestino');
+                    var selectFecha = document.getElementById('selectFecha');
+
+                    $.ajax({
+                        url: '@Url.Action("GetFlights", "Flight")',
+                        data: { origen: selectOrigen.value, destino: selectDestino.value, fechaVuelo: selectFecha.value }
+                    }).done(function (data) {
+                        var newtbody = document.createElement('tbody');
+                        data.forEach(function (object) {                  
+                    
+                                var tr = document.createElement('tr');
+                                tr.innerHTML = '<td>' + object.FlightNumber + '</td>' +
+                                    '<td>' + object.DepartureStation + '</td>' +
+                                    '<td>' + object.ArrivalStation + '</td>' +
+                                    '<td>' + '$'+ object.Price + '</td>' +
+                                    '<td>' + object.Currency + '</td>' +
+                                    '<td>' + (new Date(Number(object.DepartureDate.replace("/Date(", "").replace(")/", "")))).toLocaleString() + '</td>' +
+                                    '<td><button type="button" class="btn btn-primary" id="guardarVueloId" onclick="guardarVuelo()">Guardar</button></td>';
+                                newtbody.appendChild(tr);                     
+
+                        });
+                        table.appendChild(newtbody);
+                    }).fail(function (error) {
+                        alert('Error!!' + error);
+                    });
+
+                } else
+                    alert("El origen y el destino no pueden ser iguales") 
+
+            } else 
+                alert("Debe diligenciar todos los campos antes de realizar la búsqueda")
+        }
+
+    function guardarVuelo() {
+
+        var tabla = document.getElementById('tablaVuelos');
+
+        for (var i = 1; i < tabla.rows.length; i++) {
+            tabla.rows[i].onclick = function () {
+                rIndex = this.rowIndex;
+
+                var opcion = confirm("Está seguro que desea guadar los datos del vuelo número: " + document.getElementById("tablaVuelos").rows[rIndex].cells[0].innerText)
+                if (opcion == true) {
+                    $.ajax({
+                url: '@Url.Action("SaveFlight", "Flight")',
+                    data: {
+                            vuelo: document.getElementById("tablaVuelos").rows[rIndex].cells[0].innerText,
+                            origen: document.getElementById("tablaVuelos").rows[rIndex].cells[1].innerText,
+                            destino: document.getElementById("tablaVuelos").rows[rIndex].cells[2].innerText,
+                            precio: document.getElementById("tablaVuelos").rows[rIndex].cells[3].innerText.replace("$",""),
+                            moneda: document.getElementById("tablaVuelos").rows[rIndex].cells[4].innerText,
+                            fecha: document.getElementById("tablaVuelos").rows[rIndex].cells[5].innerText
+                          }
+                }).done(function (data) {
+                    alert("Guardado correctamente");
+                }).fail(function (error) {
+                    alert('Error!!' + error);
+                });
+
+
+                }
+
+
+
+
+
+
+
+
+            };
+        }
+
+
+
+        }
+    </script>
+
+
+
+}
+<div class="row">
+    <div class="col-md-3">
+        <div class="panel panel-info">
+            <div class="panel-heading">Buscador de Vuelos</div>
+
+            <div class="panel-body">
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="selectOrigen">Origen</label>
+                            <select class="form-control" id="selectOrigen">
+                                <option value=0 selected>Seleccione el origen</option>
+                                <option value="MDE">Medellín</option>
+                                <option value="BOG">Bogotá</option>
+                                <option value="CTG">Cartagena</option>
+                                <option value="PEI">Pereira</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="selectDestino">Destino</label>
+                            <select class="form-control" id="selectDestino">
+                                <option value=0 selected>Seleccione el destino</option>
+                                <option value="MDE">Medellín</option>
+                                <option value="BOG">Bogotá</option>
+                                <option value="CTG">Cartagena</option>
+                                <option value="PEI">Pereira</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label value=0 for="selectFecha">Seleccione Fecha</label>
+                            <input class="datepicker form-control" id="selectFecha" data-date-format="mm/dd/yyyy">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <button type="button" class="btn btn-primary" onclick="buscarVuelos()">Consultar</button>
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-9">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Disponibilidad de Vuelos</h3>
+            </div>
+        </div>
+
+        <table class="table" id="tablaVuelos">
+            <thead>
+                <tr>
+                    <th scope="col"># Vuelo</th>
+                    <th scope="col">Origen</th>
+                    <th scope="col">Destino</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Moneda</th>
+                    <th scope="col">Fecha Hora</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+
+
+
+
+
+
+
+        </table>
+    </div>
+</div>
+
+
+
+
+

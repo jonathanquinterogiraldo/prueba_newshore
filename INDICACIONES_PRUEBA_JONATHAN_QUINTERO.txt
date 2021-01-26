@@ -19,7 +19,7 @@ que se llama "Vuelos", ese link envía a la página Flights.cshtml donde se real
 
 En la rama_prueba,  Index.cshtml hay un nuevo link que se llama "Link de la Rama "rama_prueba" el cual no está en la rama master.
 
-La base de datos esta en SQL Server 2012, alojada en la nube y los datos de conexión son:
+La base de datos esta en SQL Server 2012, alojada en la nube, si llegan a necesitar los datos de conexión son:
 
 Data Source=SQL5066.site4now.net
 Initial Catalog=DB_A6E4B3_dbflights

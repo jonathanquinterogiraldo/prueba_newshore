@@ -1,0 +1,34 @@
+Buenos días,
+entrego la prueba para desarrollador .net
+
+-Ejercicio 1: Modelado de clases.REALIZADO
+-Ejercicio 2: Maquetación Web. REALIZADO
+-EjerCicio 3: Servicio API. REALIZADO
+-Ejercicio 4: Guardar Resultado en BD . REALIZADO
+
+-Ejercicio 5 (Opcional):Envío del itinerario. NO REALIZADO
+
+Funcionalidades extra:
+
+-Try Catch
+-Test Unitarios
+-Git
+
+Al iniciar la aplicacion (rama master) en la página Index.cshtml  verán un link en la parte superior derecha 
+que se llama "Vuelos", ese link envía a la página Flights.cshtml donde se realiza toda la prueba.
+
+En la rama_prueba,  Index.cshtml hay un nuevo link que se llama "Link de la Rama "rama_prueba" el cual no está en la rama master.
+
+La base de datos esta en SQL Server 2012, alojada en la nube y los datos de conexión son:
+
+Data Source=SQL5066.site4now.net
+Initial Catalog=DB_A6E4B3_dbflights
+User Id=DB_A6E4B3_dbflights_admin
+Password=dbnewshore2021
+
+El link del repositorio es:
+
+https://github.com/jonathanquinterogiraldo/prueba_newshore.git
+
+
+

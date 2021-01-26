@@ -12,8 +12,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 
-namespace prueba_newshore.Controllers
-{
+namespace prueba_newshore.Controllers{
     public class FlightController : Controller
     {
         private const string StatusCodeOk = "OK";
@@ -21,10 +20,7 @@ namespace prueba_newshore.Controllers
         public ActionResult Flights()
         {
             ViewBag.Message = "Your flights page.";
-
             return View();
-
-
         }
 
         public JsonResult GetFlights(string Origen, string Destino, DateTime FechaVuelo)
@@ -62,8 +58,6 @@ namespace prueba_newshore.Controllers
                 throw ex;
             }
         }
-
-
 
         public void SaveFlight(string Vuelo, string Origen, string Destino, string Precio, string Moneda, string Fecha )
         {         
